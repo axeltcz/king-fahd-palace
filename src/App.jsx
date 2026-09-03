@@ -1,24 +1,51 @@
-import { Routes, Route } from 'react-router-dom'
-import Navbar from './components/kfp/Navbar.jsx'
-import Footer from './components/kfp/Footer.jsx'
-import Home from './pages/Home.jsx'
-import Rooms from './pages/Rooms.jsx'
-import Restaurant from './pages/Restaurant.jsx'
-import Contact from './pages/Contact.jsx'
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './components/kfp/Navbar';
+import Hero from './components/kfp/Hero';
+import About from './components/kfp/About';
+import Chambers from './components/kfp/Chambers';
+import TerangaConcierge from './components/kfp/TerangaConcierge';
+import Dining from './components/kfp/Dining';
+import Wellness from './components/kfp/Wellness';
+import DiplomaticPulse from './components/kfp/DiplomaticPulse';
+import InstagramFeed from './components/kfp/InstagramFeed';
+import Footer from './components/kfp/Footer';
+import RoomsPage from './pages/RoomsPage';
+import DiningPage from './pages/DiningPage';
+import TerangaPage from './pages/TerangaPage';
+import DiplomacyPage from './pages/DiplomacyPage';
+import NotFoundPage from './pages/NotFoundPage';
 
-export default function App() {
+function Home() {
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-      <main className="flex-1">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/chambres" element={<Rooms />} />
-          <Route path="/restaurant" element={<Restaurant />} />
-          <Route path="/contact" element={<Contact />} />
-        </Routes>
-      </main>
+    <>
+      <Hero />
+      <About />
+      <Chambers />
+      <TerangaConcierge />
+      <Dining />
+      <Wellness />
+      <DiplomaticPulse />
+      <InstagramFeed />
       <Footer />
-    </div>
-  )
+    </>
+  );
 }
+
+function App() {
+  return (
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/chambres" element={<RoomsPage />} />
+        <Route path="/restauration" element={<DiningPage />} />
+        <Route path="/teranga" element={<TerangaPage />} />
+        <Route path="/diplomatie" element={<DiplomacyPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;

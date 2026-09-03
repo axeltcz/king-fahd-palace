@@ -1,67 +1,128 @@
-import { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const links = [
-  { to: '/', label: 'Accueil' },
-  { to: '/chambres', label: 'Chambres' },
-  { to: '/restaurant', label: 'Restaurant' },
-  { to: '/contact', label: 'Contact' },
-];
+const Navbar = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const navigate = useNavigate();
 
-export default function Navbar() {
-  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 40);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navLinks = [
+    { label: 'Le Palais', href: '#palais' },
+    { label: 'Chambres', href: '/chambres' },
+    { label: 'Teranga', href: '/teranga' },
+    { label: 'Restauration', href: '/restauration' },
+    { label: 'Bien-être', href: '#bien-etre' },
+    { label: 'Diplomatie', href: '/diplomatie' },
+    { label: 'Contact', href: '#contact' },
+  ];
+
+  const handleNavClick = (href) => {
+    setIsMobileOpen(false);
+    if (href.startsWith('#')) {
+      const element = document.querySelector(href);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      navigate(href);
+    }
+  };
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-black/80 backdrop-blur-md border-b border-gold/20">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <Link to="/" className="font-serif text-2xl tracking-wide text-gold">
-          King Fahd Palace
-        </Link>
+    <>
+      {/* Desktop Navbar */}
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 px-8 py-6 transition-all duration-300 ${
+          isScrolled ? 'glass' : 'bg-transparent'
+        }`}
+      >
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          {/* Logo */}
+          <Link
+            to="/"
+            className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+          >
+            <div className="w-8 h-8 bg-gradient-to-br from-royal-gold to-yellow-600 rounded-full flex items-center justify-center">
+              <span className="font-display text-xs font-bold text-obsidian">KF</span>
+            </div>
+            <div className="hidden sm:block font-display text-base font-light tracking-wide text-foreground">
+              King Fahd Palace<span className="text-muted-foreground text-xs ml-2">· Dakar · Sénégal</span>
+            </div>
+          </Link>
 
-        <nav className="hidden md:flex gap-8">
-          {links.map((link) => (
-            <NavLink
-              key={link.to}
-              to={link.to}
-              className={({ isActive }) =>
-                `uppercase text-sm tracking-widest transition-colors ${
-                  isActive ? 'text-gold' : 'text-white/80 hover:text-gold'
-                }`
-              }
+          {/* Desktop Links */}
+          <div className="hidden lg:flex items-center gap-8">
+            {navLinks.map((link) => (
+              <button
+                key={link.label}
+                onClick={() => handleNavClick(link.href)}
+                className="eyebrow hover:text-royal-gold transition-colors text-muted-foreground"
+              >
+                {link.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Reserve Button + Mobile Menu Toggle */}
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => handleNavClick('#reserver')}
+              className="hidden lg:block px-6 py-2 bg-gradient-to-r from-royal-gold to-yellow-600 text-obsidian font-medium text-sm rounded-sm hover:opacity-90 transition-opacity"
             >
-              {link.label}
-            </NavLink>
-          ))}
-        </nav>
-
-        <button
-          className="md:hidden text-gold"
-          onClick={() => setOpen(!open)}
-          aria-label="Menu"
-        >
-          {open ? <X size={28} /> : <Menu size={28} />}
-        </button>
-      </div>
-
-      {open && (
-        <div className="md:hidden bg-black/95 border-t border-gold/20 px-6 py-4 flex flex-col gap-4">
-          {links.map((link) => (
-            <NavLink
-              key={link.to}
-              to={link.to}
-              onClick={() => setOpen(false)}
-              className={({ isActive }) =>
-                `uppercase text-sm tracking-widest ${
-                  isActive ? 'text-gold' : 'text-white/80'
-                }`
-              }
+              Réserver
+            </button>
+            <button
+              className="lg:hidden text-foreground hover:text-royal-gold transition-colors"
+              onClick={() => setIsMobileOpen(!isMobileOpen)}
             >
-              {link.label}
-            </NavLink>
-          ))}
+              {isMobileOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
-      )}
-    </header>
+      </nav>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="fixed top-16 left-0 right-0 bg-obsidian border-b border-border z-40 lg:hidden"
+          >
+            <div className="flex flex-col p-8 gap-6">
+              {navLinks.map((link) => (
+                <button
+                  key={link.label}
+                  onClick={() => handleNavClick(link.href)}
+                  className="font-display text-2xl text-left text-foreground hover:text-royal-gold transition-colors"
+                >
+                  {link.label}
+                </button>
+              ))}
+              <button
+                onClick={() => handleNavClick('#reserver')}
+                className="mt-4 px-6 py-3 bg-gradient-to-r from-royal-gold to-yellow-600 text-obsidian font-medium rounded-sm hover:opacity-90 transition-opacity w-full"
+              >
+                Réserver
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
-}
+};
+
+export default Navbar;
