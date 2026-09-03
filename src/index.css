@@ -2,10 +2,108 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-night-900 text-white font-sans;
+:root {
+  --font-display: 'Cormorant Garamond', serif;
+  --font-sans: 'Instrument Sans', sans-serif;
+
+  --background: 0 0% 4%;
+  --foreground: 213 27% 91%;
+
+  --card: 0 0% 6%;
+  --card-foreground: 213 27% 91%;
+
+  --primary: 43 65% 52%;
+  --primary-foreground: 0 0% 4%;
+
+  --secondary: 30 30% 14%;
+  --secondary-foreground: 213 27% 91%;
+
+  --muted: 0 0% 12%;
+  --muted-foreground: 213 16% 70%;
+
+  --accent: 18 38% 62%;
+  --accent-foreground: 0 0% 4%;
+
+  --border: 40 30% 18%;
+  --input: 40 30% 18%;
+  --ring: 43 65% 52%;
+
+  --radius: 0.25rem;
 }
 
-h1, h2, h3, h4 {
-  @apply font-serif;
+* {
+  border-color: hsl(var(--border));
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.eyebrow {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: hsl(var(--primary));
+}
+
+.display-xl {
+  font-family: var(--font-display);
+  font-weight: 300;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+}
+
+.hairline {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, hsl(var(--primary) / 0.5), transparent);
+}
+
+.gold-text {
+  background: linear-gradient(180deg, #E8C766, #D4AF37 45%, #A67B12);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.glass {
+  background: hsl(0 0% 4% / 0.5);
+  backdrop-filter: blur(8px) saturate(140%);
+  -webkit-backdrop-filter: blur(8px) saturate(140%);
+  border: 1px solid hsl(var(--primary) / 0.18);
+}
+
+.monogram-veil {
+  background-image: url('https://www.kingfahdpalacehotels.com/wp-content/uploads/2021/11/Logo_KFP_HD2.png');
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.04;
+  filter: grayscale(1) brightness(1.4);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.fade-up-init {
+  opacity: 0;
+  transform: translateY(24px);
 }
