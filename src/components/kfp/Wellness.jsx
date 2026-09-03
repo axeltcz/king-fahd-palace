@@ -1,101 +1,76 @@
-import React from 'react';
-import { Activity, Dumbbell, Waves, Users } from 'lucide-react';
-import { useInView } from 'react-intersection-observer';
+import React from "react";
+import { Activity, Dumbbell, Waves, Users } from "lucide-react";
 
 const Wellness = () => {
-  const { ref, inView } = useInView({
-    threshold: 0.2,
-    triggerOnce: true,
-  });
+  const services = [
+    {
+      icon: Activity,
+      title: "Fitness Center",
+      description: "State-of-the-art gymnasium with personal trainers"
+    },
+    {
+      icon: Dumbbell,
+      title: "Strength Training",
+      description: "Olympic-grade equipment and specialized programs"
+    },
+    {
+      icon: Waves,
+      title: "Aquatic Facilities",
+      description: "Olympic swimming pools and water therapy centers"
+    },
+    {
+      icon: Users,
+      title: "Wellness Groups",
+      description: "Community fitness classes and wellness seminars"
+    }
+  ];
 
   return (
-    <section
-      ref={ref}
-      className="min-h-screen bg-gradient-to-b from-[#0A0A0B] to-[#1a1a1d] py-20 px-4"
-    >
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div
-          className={`text-center mb-16 transition-all duration-700 transform ${
-            inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
-          <h2 className="text-5xl md:text-6xl font-serif text-[#D4AF37] mb-4">
-            Wellness Sanctuary
-          </h2>
-          <p className="text-xl text-gray-400 font-light">
-            Rejuvenation and vitality at the heart of luxury
+    <section className="py-16 px-4 bg-gradient-to-b from-white to-gray-50">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-12 animate-fade-in">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">Wellness Center</h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Comprehensive health and fitness facilities designed for rejuvenation and vitality
           </p>
         </div>
 
-        {/* Wellness Image Section */}
-        <div
-          className={`mb-16 transition-all duration-700 transform ${
-            inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
-          <img
-            src="https://images.unsplash.com/photo-1544161515-81205f8abecc?w=1200&q=80"
-            alt="Wellness at King Fahd Palace"
-            className="w-full h-96 object-cover rounded-lg shadow-2xl border border-[#D4AF37]/20"
-          />
-        </div>
-
-        {/* Wellness Pillars Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {[
-            {
-              icon: Activity,
-              title: 'Spa & Massage',
-              description: 'Traditional therapies and modern treatments',
-            },
-            {
-              icon: Dumbbell,
-              title: 'Fitness Center',
-              description: 'State-of-the-art equipment and expert trainers',
-            },
-            {
-              icon: Waves,
-              title: 'Swimming Pools',
-              description: 'Olympic-size and relaxation pools',
-            },
-            {
-              icon: Users,
-              title: 'Banquet Halls',
-              description: 'Private wellness events and retreats',
-            },
-          ].map((pillar, idx) => {
-            const Icon = pillar.icon;
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {services.map((service, index) => {
+            const Icon = service.icon;
             return (
               <div
-                key={idx}
-                className={`group relative bg-[#1a1a1d]/50 border border-[#D4AF37]/20 rounded-lg p-6 hover:border-[#D4AF37]/60 transition-all duration-500 transform ${
-                  inView
-                    ? 'opacity-100 translate-y-0'
-                    : 'opacity-0 translate-y-8'
-                }`}
-                style={{ transitionDelay: `${idx * 100}ms` }}
+                key={index}
+                className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow duration-300 animate-fade-in"
+                style={{
+                  animationDelay: `${index * 0.1}s`
+                }}
               >
-                {/* Icon */}
-                <div className="flex justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <Icon className="w-12 h-12 text-[#D4AF37]" />
-                </div>
-
-                {/* Title & Description */}
-                <h3 className="text-xl font-serif text-[#D4AF37] text-center mb-2">
-                  {pillar.title}
-                </h3>
-                <p className="text-sm text-gray-400 text-center leading-relaxed">
-                  {pillar.description}
-                </p>
-
-                {/* Hover accent */}
-                <div className="absolute inset-0 bg-gradient-to-r from-[#D4AF37]/0 via-[#D4AF37]/10 to-[#D4AF37]/0 opacity-0 group-hover:opacity-100 rounded-lg transition-opacity duration-500" />
+                <Icon className="w-12 h-12 text-amber-600 mb-4" />
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">{service.title}</h3>
+                <p className="text-gray-600 text-sm">{service.description}</p>
               </div>
             );
           })}
         </div>
       </div>
+
+      <style>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-fade-in {
+          animation: fadeIn 0.6s ease-out forwards;
+          opacity: 0;
+        }
+      `}</style>
     </section>
   );
 };
